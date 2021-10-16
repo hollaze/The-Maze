@@ -1,0 +1,1 @@
+gcc file(s).c header(s).h -Wall -Werror -Wextra -std=gnu89 -pedantic `sdl2-config --cflags --libs`
