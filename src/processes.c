@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "maze.h"
+#include "../headers/maze.h"
 
 int processQuitAndEscape(is_game_running game_running, int running)
 {

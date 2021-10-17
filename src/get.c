@@ -1,5 +1,5 @@
 #include <stdlib.h>
-#include "maze.h"
+#include "../headers/maze.h"
 
 void get_W(get_wrt *get, SDL_Window *window)
 {

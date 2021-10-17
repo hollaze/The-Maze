@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "maze.h"
+#include "../headers/maze.h"
 
 int initializeWindowAndRenderer(SDL_Window *window, SDL_Renderer *renderer)
 {
