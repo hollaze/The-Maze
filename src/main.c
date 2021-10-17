@@ -2,27 +2,26 @@
 #include <stdlib.h>
 #include "maze.h"
 
-int isGameRunning;
-int player_x, player_y;
-
 int main(void)
 {
-	get_wrt wrt;
 	SDL_Window *window = NULL;
 	SDL_Renderer *renderer = NULL;
 
-	player_x = 0, player_y = 0;
-	isGameRunning = FALSE;
+	get_wrt wrt;
+	is_game_running game_running;
+	player_struct player = {PLAYER_X, PLAYER_Y}; /* setup player spawn */
 
-	isGameRunning = initializeWindowAndRenderer(window, renderer);
+	game_running.running = FALSE;
+
+	game_running.running = initializeWindowAndRenderer(window, renderer);
 	get_W(&wrt, window);
 	get_R(&wrt, renderer);
 
-	while (isGameRunning)
+	while (game_running.running)
 	{
-		processQuitAndEscape();
-		update();
-		render(wrt.renderer);
+		game_running.running = processQuitAndEscape(game_running, game_running.running);
+		update(player);
+		render(wrt.renderer, player);
 		get_R(&wrt, renderer);
 	}
 
