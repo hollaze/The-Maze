@@ -10,10 +10,9 @@
 #define WINDOW_WIDTH 800
 #define WINDOW_HEIGHT 600
 
-/* Check if game is running - TRUE or FALSE */
-extern int isGameRunning;
-/* Set player x and y position */
-extern int player_x, player_y;
+/* Player spawn */
+#define PLAYER_X 0
+#define PLAYER_Y 0
 
 /**
  * struct get_wrt - get window, renderer and texture
@@ -36,27 +35,35 @@ void get_R(get_wrt *get, SDL_Renderer *renderer);
 void get_T(get_wrt *get, SDL_Texture *texture);
 
 /**
+ * is_game_running - check if game is running
+ * @running: int that is either TRUE or FALSE
+ */
+
+typedef struct is_game_running {
+	int running;
+} is_game_running;
+
+/**
  * struct get_player - get player position and movements
  * @x: player x position
  * @y: player y position
  */
 
-/*typedef struct get_player
+typedef struct player_struct
 {
 	int x;
 	int y;
-} get_player;*/
-
+} player_struct;
 
 /* Initialize */
 int initializeWindowAndRenderer(SDL_Window *window, SDL_Renderer *renderer);
-void render(SDL_Renderer *renderer);
+void render(SDL_Renderer *renderer, player_struct player);
 
 /* Processes inputs */
-void processQuitAndEscape(void);
+int processQuitAndEscape(is_game_running game_running, int running);
 
 /* Player movements */
-void update();
+void update(player_struct player);
 
 /* Destroy and quit */
 void destroyAndQuit(SDL_Window *window, SDL_Renderer *renderer);
