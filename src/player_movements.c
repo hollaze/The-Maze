@@ -1,10 +1,7 @@
-#include <stdio.h>
 #include "maze.h"
 
-void update()
+void update(player_struct player)
 {
-        player_x += 1;
-        player_y += 1;
-
-        printf("X: %d, Y: %d\n", player_x, player_y);
+        player.x += 1;
+        player.y += 1;
 }
