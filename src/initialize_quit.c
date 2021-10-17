@@ -22,20 +22,30 @@ int initializeWindowAndRenderer(SDL_Window *window, SDL_Renderer *renderer)
 	if (renderer == NULL)
 		exitWithError("Cannot create SDL renderer");
 
-	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+	if (SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND) != 0)
+		exitWithError("Cannot set render draw blend mode");
 
 	return TRUE;
 }
 
-void render(SDL_Renderer *renderer)
+void render(SDL_Renderer *renderer, player_struct player)
 {
-	SDL_Rect rect = {player_x, player_y, 20, 20};
+	SDL_Rect rect;
 
-	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-	SDL_RenderClear(renderer);
+	rect.w = 20;
+	rect.h = 20;
+	rect.x = player.x;
+	rect.y = player.y;
 
-	SDL_SetRenderDrawColor(renderer, 255, 255, 0, 255);
-	SDL_RenderFillRect(renderer, &rect);
+	if (SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255) != 0)
+		exitWithError("Cannot render color");
+	if (SDL_RenderClear(renderer) != 0)
+		exitWithError("Cannot clear renderer");
+
+	if (SDL_SetRenderDrawColor(renderer, 255, 255, 0, 255) != 0)
+		exitWithError("Cannot render color");
+	if (SDL_RenderFillRect(renderer, &rect) != 0)
+		exitWithError("Cannot fill rectangle with color");
 
 	SDL_RenderPresent(renderer);
 }
