@@ -2,30 +2,40 @@
 #include <stdlib.h>
 #include "../headers/maze.h"
 
+/**
+ * main - The Maze game
+ * Return: 0
+ */
+
 int main(void)
 {
 	SDL_Window *window = NULL;
 	SDL_Renderer *renderer = NULL;
+	player_struct player;
 
-	get_wrt wrt;
-	is_game_running game_running;
-	player_struct player = {PLAYER_X, PLAYER_Y}; /* setup player spawn */
+	int is_running = FALSE;
+	int ticks_last_frame = 0;
+	double delta_time = 0.0f;
 
-	game_running.running = FALSE;
+	window = initializeWindow(window);
+	renderer = initializeRenderer(window, renderer);
 
-	game_running.running = initializeWindowAndRenderer(window, renderer);
-	get_W(&wrt, window);
-	get_R(&wrt, renderer);
+	if (window == NULL && renderer == NULL)
+		exitWithError("main.c : window or renderer are NULL");
+	is_running = TRUE;
 
-	while (game_running.running)
+	player = setup();
+
+	while (is_running)
 	{
-		game_running.running = processQuitAndEscape(game_running, game_running.running);
-		update(player);
-		render(wrt.renderer, player);
-		get_R(&wrt, renderer);
+		is_running = processQuitAndEscape(is_running);
+		delta_time = deltaTime(delta_time, ticks_last_frame);
+		update(delta_time, ticks_last_frame);
+		ticks_last_frame = ticksLastFrame(ticks_last_frame);
+		render(renderer, player);
 	}
 
-	destroyAndQuit(wrt.window, wrt.renderer);
+	destroyAndQuit(window, renderer);
 
 	return (0);
 }
