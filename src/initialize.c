@@ -2,6 +2,12 @@
 #include <stdlib.h>
 #include "../headers/maze.h"
 
+/**
+ * initializeWindow - initialize the window
+ * @window: window value
+ * Return: window
+ */
+
 SDL_Window *initializeWindow(SDL_Window *window)
 {
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
@@ -20,6 +26,13 @@ SDL_Window *initializeWindow(SDL_Window *window)
 	return (window);
 }
 
+/**
+ * initializeRenderer - initialize the renderer
+ * @window: window value
+ * @renderer: renderer value
+ * Return: renderer
+ */
+
 SDL_Renderer *initializeRenderer(SDL_Window *window, SDL_Renderer *renderer)
 {
 	renderer = SDL_CreateRenderer(window, -1, 0);
@@ -35,28 +48,62 @@ SDL_Renderer *initializeRenderer(SDL_Window *window, SDL_Renderer *renderer)
 
 void render(SDL_Renderer *renderer, player_struct player)
 {
-	SDL_Rect rect;
-
-	rect.w = 20;
-	rect.h = 20;
-	rect.x = player.x;
-	rect.y = player.y;
-
 	if (renderer == NULL)
 		exitWithError("renderer is NULL");
 
+	/* Set screen to black */
 	if (SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE) != 0)
-		exitWithError("Cannot render color");
+		exitWithError("render, cannot render color");
 	if (SDL_RenderClear(renderer) != 0)
-		exitWithError("Cannot clear renderer");
+		exitWithError("render, cannot clear renderer");
 
-	SDL_RenderDrawRect(renderer, &rect);
-
-	if (SDL_SetRenderDrawColor(renderer, 255, 255, 0,
-				   SDL_ALPHA_OPAQUE) != 0)
-		exitWithError("Cannot render color");
-	if (SDL_RenderFillRect(renderer, &rect) != 0)
-		exitWithError("Cannot fill rectangle with color");
+	renderMap(renderer);
+	/*renderRays();*/
+	renderPlayer(renderer, player);
+	/* TODO: Render game objects here */
 
 	SDL_RenderPresent(renderer);
+	if (SDL_RenderClear(renderer) != 0)
+		exitWithError("render, cannot clear renderer");
+}
+
+/**
+ * renderMap - render the map on the window
+ * @renderer: renderer value
+ * Return: void
+ */
+
+void renderMap(SDL_Renderer *renderer)
+{
+	int i, j;
+	int tile_x, tile_y, tile_color;
+	SDL_Rect map_tile_rect;
+
+	if (renderer == NULL)
+		exitWithError("renderMap, renderer is NULL");
+
+
+	for (i = 0; i < MAP_NUM_ROWS; i++)
+	{
+		for (j = 0; j < MAP_NUM_COLS; j++)
+		{
+			tile_y = i * TILE_SIZE;
+			tile_x = j * TILE_SIZE;
+			tile_color = (map[i][j] != 0) ? 255 : 0;
+
+			if (SDL_SetRenderDrawColor(renderer,
+					       tile_color,
+					       tile_color,
+					       tile_color,
+					       255) != 0)
+				exitWithError("renderMap,cannot render color");
+
+			map_tile_rect.x = tile_x * MINIMAP_SCALE_FACTOR;
+			map_tile_rect.y = tile_y * MINIMAP_SCALE_FACTOR;
+			map_tile_rect.w = TILE_SIZE * MINIMAP_SCALE_FACTOR;
+			map_tile_rect.h = TILE_SIZE * MINIMAP_SCALE_FACTOR;
+
+			SDL_RenderFillRect(renderer, &map_tile_rect);
+		}
+	}
 }
