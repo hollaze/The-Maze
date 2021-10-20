@@ -98,10 +98,10 @@ void renderMap(SDL_Renderer *renderer)
 					       255) != 0)
 				exitWithError("renderMap,cannot render color");
 
-			map_tile_rect.x = tile_x * MINIMAP_SCALE_FACTOR;
-			map_tile_rect.y = tile_y * MINIMAP_SCALE_FACTOR;
-			map_tile_rect.w = TILE_SIZE * MINIMAP_SCALE_FACTOR;
-			map_tile_rect.h = TILE_SIZE * MINIMAP_SCALE_FACTOR;
+			map_tile_rect.x = tile_x;
+			map_tile_rect.y = tile_y;
+			map_tile_rect.w = TILE_SIZE;
+			map_tile_rect.h = TILE_SIZE;
 
 			SDL_RenderFillRect(renderer, &map_tile_rect);
 		}

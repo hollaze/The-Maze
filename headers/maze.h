@@ -36,6 +36,7 @@
 
 /* Map of the game */
 extern const int map[MAP_NUM_ROWS][MAP_NUM_COLS];
+extern int is_running;
 
 /**
  * struct player_struct - player position,
@@ -72,13 +73,14 @@ void renderMap(SDL_Renderer *renderer);
 void renderPlayer(SDL_Renderer *renderer, player_struct player);
 
 /* Processes inputs */
-int processQuitAndEscape(int is_running);
+player_struct processes(player_struct player);
 
 /* Player movements */
-player_struct setup(void);
-void update(double delta_time, int ticks_last_frame);
-double deltaTime(double delta_time, int ticks_last_frame);
+player_struct setup_player(void);
+player_struct update(float delta_time, int ticks_last_frame, player_struct player);
+float deltaTime(float delta_time, int ticks_last_frame);
 int ticksLastFrame(int ticks_last_frame);
+player_struct movePlayer(float delta_time, player_struct player);
 
 /* Free */
 void destroyAndQuit(SDL_Window *window, SDL_Renderer *renderer);

@@ -2,14 +2,9 @@
 #include <stdlib.h>
 #include "../headers/maze.h"
 
-/**
- * processQuitAndEscape - close window on escape or on click on the X
- * @is_running: TRUE or FALSE, if FALSE, close window
- * and while loop in main.c
- * Return: is_running
- */
 
-int processQuitAndEscape(int is_running)
+
+player_struct processes(player_struct player)
 {
 	SDL_Event event;
 
@@ -18,13 +13,33 @@ int processQuitAndEscape(int is_running)
 	switch (event.type)
 	{
 	case SDL_QUIT:
-		is_running = FALSE;
+		is_running = FALSE; /* quit on click on the X on the window */
 		break;
 
 	case SDL_KEYDOWN:
-		if (event.key.keysym.sym == SDLK_ESCAPE)
+		if (event.key.keysym.sym == SDLK_ESCAPE) /* quit on escape button */
 			is_running = FALSE;
+		/* keys for player movements */
+		if (event.key.keysym.sym == SDLK_UP)
+			player.walk_direction = 1;
+		if (event.key.keysym.sym == SDLK_DOWN)
+			player.walk_direction = -1;
+		if (event.key.keysym.sym == SDLK_RIGHT)
+			player.turn_direction = 1;
+		if (event.key.keysym.sym == SDLK_LEFT)
+			player.turn_direction = -1;
+		break;
+	case SDL_KEYUP:
+		/* don't move if nothing is pressed */
+		if (event.key.keysym.sym == SDLK_UP)
+			player.walk_direction = 0;
+		if (event.key.keysym.sym == SDLK_DOWN)
+			player.walk_direction = 0;
+		if (event.key.keysym.sym == SDLK_RIGHT)
+			player.turn_direction = 0;
+		if (event.key.keysym.sym == SDLK_LEFT)
+			player.turn_direction = 0;
 		break;
 	}
-	return (is_running);
+	return (player);
 }

@@ -6,19 +6,19 @@
  * Return: player values
  */
 
-player_struct setup(void)
+player_struct setup_player(void)
 {
 	player_struct player;
 
-	player.x = WINDOW_WIDTH / 2;
-	player.y = WINDOW_HEIGHT / 2;
+	player.x = WINDOW_WIDTH / 2; 	/* Center in x position */
+	player.y = WINDOW_HEIGHT / 2;	/* Center in y position */
 	player.width = 5;
 	player.height = 5;
 	player.turn_direction = 0;
 	player.walk_direction = 0;
-	player.rotation_angle = PI / 2; /* 90 degrees */
-	player.walk_speed = 100;
-	player.turn_speed = 45 * (PI / 180); /* 45 degrees per second */
+	player.rotation_angle = PI / 2;	/* 90 degrees */
+	player.walk_speed = 2;
+	player.turn_speed = 60 * (PI / 180); /* 45 degrees per second */
 
 	return (player);
 }
@@ -37,20 +37,20 @@ void renderPlayer(SDL_Renderer *renderer, player_struct player)
 	if (SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255) != 0)
 		exitWithError("renderPlayer, cannot set render draw color");
 
-	player_rect.x = player.x * MINIMAP_SCALE_FACTOR;
-	player_rect.y = player.y * MINIMAP_SCALE_FACTOR;
-	player_rect.w = player.width * MINIMAP_SCALE_FACTOR;
-	player_rect.h = player.height * MINIMAP_SCALE_FACTOR;
+	player_rect.x = player.x;
+	player_rect.y = player.y;
+	player_rect.w = player.width;
+	player_rect.h = player.height;
 
 	if (SDL_RenderFillRect(renderer, &player_rect) != 0)
 		exitWithError("renderPlayer, cannot fill rectangle");
 
 	if (SDL_RenderDrawLine(renderer,
-			       player.x * MINIMAP_SCALE_FACTOR,
-			       player.y * MINIMAP_SCALE_FACTOR,
+			       player.x,
+			       player.y,
 			       (player.x + cos(player.rotation_angle) * 40)
-			       * MINIMAP_SCALE_FACTOR,
+			      ,
 			       (player.y + sin(player.rotation_angle) * 40)
-			       * MINIMAP_SCALE_FACTOR) != 0)
+			      ) != 0)
 		exitWithError("renderPlayer, cannot render draw line");
 }

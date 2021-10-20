@@ -11,7 +11,7 @@
  * Return: delta_time
  */
 
-double deltaTime(double delta_time, int ticks_last_frame)
+float deltaTime(float delta_time, int ticks_last_frame)
 {
 	delta_time = ((SDL_GetTicks() - ticks_last_frame) / 1000.0f);
 	return (delta_time);
@@ -37,7 +37,7 @@ int ticksLastFrame(int ticks_last_frame)
  * Return: void
  */
 
-void update(double delta_time, int ticks_last_frame)
+player_struct update(float delta_time, int ticks_last_frame, player_struct player)
 {
 	int time_to_wait;
 
@@ -49,12 +49,22 @@ void update(double delta_time, int ticks_last_frame)
 	delta_time = deltaTime(delta_time, ticks_last_frame);
 	ticks_last_frame = ticksLastFrame(ticks_last_frame);
 
-	/*movePlayer(delta_time);*/
+	player = movePlayer(delta_time, player);
+
+	return (player);
 
 	/* TODO: remember to update game objects as a function of deltatime */
 }
 
-/*void movePlayer(double delta_time)
+player_struct movePlayer(float delta_time, player_struct player)
 {
+	float move_step;
 
-}*/
+	player.rotation_angle += player.turn_direction * player.turn_speed * delta_time;
+	move_step = player.walk_direction * player.walk_speed;
+
+	player.x += cos(player.rotation_angle) * move_step;
+	player.y += sin(player.rotation_angle) * move_step;
+
+	return (player);
+}
