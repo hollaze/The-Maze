@@ -51,20 +51,49 @@ player_struct update(float delta_time, int ticks_last_frame, player_struct playe
 
 	player = movePlayer(delta_time, player);
 
+
 	return (player);
 
 	/* TODO: remember to update game objects as a function of deltatime */
 }
 
+/**
+ * setup - setup all player values
+ * Return: player values
+ */
+
+player_struct setup_player(void)
+{
+	player_struct player;
+
+	player.x = WINDOW_WIDTH / 2;  /* Center in x position */
+	player.y = WINDOW_HEIGHT / 2; /* Center in y position */
+	player.width = 5;
+	player.height = 5;
+	player.turn_direction = 0;
+	player.walk_direction = 0;
+	player.rotation_angle = PI / 2; /* 90 degrees */
+	player.walk_speed = 2;
+	player.turn_speed = 60 * (PI / 180); /* 45 degrees per second */
+
+	return (player);
+}
+
 player_struct movePlayer(float delta_time, player_struct player)
 {
 	float move_step;
+	float new_player_x, new_player_y;
 
 	player.rotation_angle += player.turn_direction * player.turn_speed * delta_time;
 	move_step = player.walk_direction * player.walk_speed;
 
-	player.x += cos(player.rotation_angle) * move_step;
-	player.y += sin(player.rotation_angle) * move_step;
+	new_player_x = player.x + cos(player.rotation_angle) * move_step;
+	new_player_y = player.y + sin(player.rotation_angle) * move_step;
 
+	if (!mapHasWallAt(new_player_x, new_player_y))
+	{
+		player.x = new_player_x;
+		player.y = new_player_y;
+	}
 	return (player);
 }

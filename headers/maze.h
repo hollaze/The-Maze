@@ -22,7 +22,7 @@
 #define WINDOW_HEIGHT (MAP_NUM_ROWS * TILE_SIZE)
 
 /* Field Of View */
-#define FOW_ANGLE (60 * (PI / 180))
+#define FOV_ANGLE (60 * (PI / 180))
 #define NUM_RAYS WINDOW_WIDTH
 
 /* Frame Per Second */
@@ -36,7 +36,6 @@
 
 /* Map of the game */
 extern const int map[MAP_NUM_ROWS][MAP_NUM_COLS];
-extern int is_running;
 
 /**
  * struct player_struct - player position,
@@ -50,6 +49,7 @@ extern int is_running;
  * @rotation_angle: rotation angle of the player
  * @walk_speed: walk speed of the player
  * @turn_speed: turn speed of the player
+ * @is_game_running: TRUE if game is running, FALSE otherwise
  */
 
 typedef struct player_struct
@@ -63,7 +63,21 @@ typedef struct player_struct
 	float rotation_angle;
 	float walk_speed;
 	float turn_speed;
+	int is_game_running;
 } player_struct;
+
+struct ray_struct {
+	float ray_angle;
+	float distance;
+	float wall_hit_x;
+	float wall_hit_y;
+	int was_hit_vertical;
+	int ray_facing_up;
+	int ray_facing_down;
+	int ray_facing_right;
+	int ray_facing_left;
+	int wall_hit_content;
+} rays[NUM_RAYS];
 
 /* Initialize */
 SDL_Window *initializeWindow(SDL_Window *window);
@@ -71,9 +85,11 @@ SDL_Renderer *initializeRenderer(SDL_Window *window, SDL_Renderer *renderer);
 void render(SDL_Renderer *renderer, player_struct player);
 void renderMap(SDL_Renderer *renderer);
 void renderPlayer(SDL_Renderer *renderer, player_struct player);
+int mapHasWallAt(float player_x, float player_y);
+void castAllRays(player_struct player);
 
 /* Processes inputs */
-player_struct processes(player_struct player);
+player_struct processInput(player_struct player);
 
 /* Player movements */
 player_struct setup_player(void);

@@ -2,8 +2,6 @@
 #include <stdlib.h>
 #include "../headers/maze.h"
 
-int is_running = FALSE;
-
 /**
  * main - The Maze game
  * Return: 0
@@ -20,16 +18,17 @@ int main(void)
 
 	window = initializeWindow(window);
 	renderer = initializeRenderer(window, renderer);
+	player.is_game_running = FALSE;
 
 	if (window == NULL && renderer == NULL)
 		exitWithError("main.c : window or renderer are NULL");
-	is_running = TRUE;
+	player.is_game_running = TRUE;
 
 	player = setup_player();
 
-	while (is_running)
+	while (player.is_game_running)
 	{
-		player = processes(player);
+		player = processInput(player);
 		delta_time = deltaTime(delta_time, ticks_last_frame);
 		player = update(delta_time, ticks_last_frame, player);
 		ticks_last_frame = ticksLastFrame(ticks_last_frame);
