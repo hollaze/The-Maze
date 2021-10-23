@@ -8,7 +8,7 @@
  * Return: window
  */
 
-SDL_Window *initializeWindow(SDL_Window *window)
+void initializeWindow(void)
 {
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
 		exitWithError("Cannot initialize SDL");
@@ -22,8 +22,6 @@ SDL_Window *initializeWindow(SDL_Window *window)
 
 	if (window == NULL)
 		exitWithError("Cannot create SDL window");
-
-	return (window);
 }
 
 /**
@@ -33,7 +31,7 @@ SDL_Window *initializeWindow(SDL_Window *window)
  * Return: renderer
  */
 
-SDL_Renderer *initializeRenderer(SDL_Window *window, SDL_Renderer *renderer)
+void initializeRenderer(void)
 {
 	renderer = SDL_CreateRenderer(window, -1, 0);
 
@@ -42,11 +40,9 @@ SDL_Renderer *initializeRenderer(SDL_Window *window, SDL_Renderer *renderer)
 
 	if (SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND) != 0)
 		exitWithError("Cannot set render draw blend mode");
-
-	return (renderer);
 }
 
-void render(SDL_Renderer *renderer, player_struct player)
+void render(void)
 {
 	if (renderer == NULL)
 		exitWithError("renderer is NULL");
@@ -57,10 +53,9 @@ void render(SDL_Renderer *renderer, player_struct player)
 	if (SDL_RenderClear(renderer) != 0)
 		exitWithError("render, cannot clear renderer");
 
-	renderMap(renderer);
-	/*renderRays();*/
-	renderPlayer(renderer, player);
-	/* TODO: Render game objects here */
+	renderMap();
+	renderRays();
+	renderPlayer();
 
 	SDL_RenderPresent(renderer);
 	if (SDL_RenderClear(renderer) != 0)
@@ -69,11 +64,11 @@ void render(SDL_Renderer *renderer, player_struct player)
 
 /**
  * renderMap - render the map on the window
- * @renderer: renderer value
+ * @renderer: renderer value to render map
  * Return: void
  */
 
-void renderMap(SDL_Renderer *renderer)
+void renderMap(void)
 {
 	int i, j;
 	int tile_x, tile_y, tile_color;
@@ -98,42 +93,43 @@ void renderMap(SDL_Renderer *renderer)
 					       255) != 0)
 				exitWithError("renderMap,cannot render color");
 
-			map_tile_rect.x = tile_x;
-			map_tile_rect.y = tile_y;
-			map_tile_rect.w = TILE_SIZE;
-			map_tile_rect.h = TILE_SIZE;
+			map_tile_rect.x = tile_x * MINIMAP_SCALE_FACTOR;
+			map_tile_rect.y = tile_y * MINIMAP_SCALE_FACTOR;
+			map_tile_rect.w = TILE_SIZE * MINIMAP_SCALE_FACTOR;
+			map_tile_rect.h = TILE_SIZE * MINIMAP_SCALE_FACTOR;
 
-			SDL_RenderFillRect(renderer, &map_tile_rect);
+			if (SDL_RenderFillRect(renderer, &map_tile_rect) != 0)
+                                exitWithError("renderMap, cannot fill rect");
 		}
 	}
 }
 
 /**
- * renderPlayer - render player on screen
+ * renderPlayer - render player on the window
  * @renderer: renderer value to render player
  * @player: player struct values
  * Return: void
  */
 
-void renderPlayer(SDL_Renderer *renderer, player_struct player)
+void renderPlayer(void)
 {
 	SDL_Rect player_rect;
 
 	if (SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255) != 0)
 		exitWithError("renderPlayer, cannot set render draw color");
 
-	player_rect.x = player.x;
-	player_rect.y = player.y;
-	player_rect.w = player.width;
-	player_rect.h = player.height;
+	player_rect.x = player.x * MINIMAP_SCALE_FACTOR;
+	player_rect.y = player.y * MINIMAP_SCALE_FACTOR;
+	player_rect.w = player.width * MINIMAP_SCALE_FACTOR;
+	player_rect.h = player.height * MINIMAP_SCALE_FACTOR;
 
 	if (SDL_RenderFillRect(renderer, &player_rect) != 0)
 		exitWithError("renderPlayer, cannot fill rectangle");
 
 	if (SDL_RenderDrawLine(renderer,
-			       player.x,
-			       player.y,
-			       (player.x + cos(player.rotation_angle) * 40),
-			       (player.y + sin(player.rotation_angle) * 40)) != 0)
+			       player.x * MINIMAP_SCALE_FACTOR,
+			       player.y * MINIMAP_SCALE_FACTOR,
+			       (player.x + cos(player.rotation_angle) * 40) * MINIMAP_SCALE_FACTOR,
+			       (player.y + sin(player.rotation_angle) * 40) * MINIMAP_SCALE_FACTOR) != 0)
 		exitWithError("renderPlayer, cannot render draw line");
 }

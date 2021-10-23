@@ -2,6 +2,15 @@
 #include <stdlib.h>
 #include "../headers/maze.h"
 
+int is_game_running = FALSE;
+int ticks_last_frame;
+SDL_Window *window = NULL;
+SDL_Renderer *renderer = NULL;
+
+player_struct player;
+struct ray_struct rays[NUM_RAYS];
+coll_detect cd;
+
 /**
  * main - The Maze game
  * Return: 0
@@ -9,33 +18,23 @@
 
 int main(void)
 {
-	SDL_Window *window = NULL;
-	SDL_Renderer *renderer = NULL;
-	player_struct player;
+	initializeWindow();
+	initializeRenderer();
 
-	int ticks_last_frame = 0;
-	float delta_time = 0.0f;
-
-	window = initializeWindow(window);
-	renderer = initializeRenderer(window, renderer);
-	player.is_game_running = FALSE;
-
-	if (window == NULL && renderer == NULL)
+	if (window == NULL || renderer == NULL)
 		exitWithError("main.c : window or renderer are NULL");
-	player.is_game_running = TRUE;
+	is_game_running = TRUE;
 
-	player = setup_player();
+	setup_player();
 
-	while (player.is_game_running)
+	while (is_game_running)
 	{
-		player = processInput(player);
-		delta_time = deltaTime(delta_time, ticks_last_frame);
-		player = update(delta_time, ticks_last_frame, player);
-		ticks_last_frame = ticksLastFrame(ticks_last_frame);
-		render(renderer, player);
+		processInput();
+		update();
+		render();
 	}
 
-	destroyAndQuit(window, renderer);
+	destroyAndQuit();
 
 	return (0);
 }

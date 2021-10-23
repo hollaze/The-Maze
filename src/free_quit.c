@@ -8,7 +8,7 @@
  * Return: void
  */
 
-void destroyAndQuit(SDL_Window *window, SDL_Renderer *renderer)
+void destroyAndQuit()
 {
 	/* Free renderer */
 	SDL_DestroyRenderer(renderer);

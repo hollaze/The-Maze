@@ -3,6 +3,10 @@
 
 #include <SDL2/SDL.h>
 
+/****************************/
+/********** MACROS **********/
+/****************************/
+
 #define TRUE 1
 #define FALSE 0
 
@@ -15,14 +19,17 @@
 /* Scale of the minimap on the screen */
 /* going from 0 to 1 */
 /* 1 is full screen */
-#define MINIMAP_SCALE_FACTOR 0.3
+#define MINIMAP_SCALE_FACTOR 1.0
 
 /* Dynamic window */
 #define WINDOW_WIDTH (MAP_NUM_COLS * TILE_SIZE)
 #define WINDOW_HEIGHT (MAP_NUM_ROWS * TILE_SIZE)
 
 /* Field Of View */
+/* convert from degrees to radians */
 #define FOV_ANGLE (60 * (PI / 180))
+/* Number of rays is 1 per pixel of the window width */
+/* within the field of view (limited by the field of view) */
 #define NUM_RAYS WINDOW_WIDTH
 
 /* Frame Per Second */
@@ -34,8 +41,20 @@
 #define PI 3.14159265
 #define TWO_PI 6.28318530
 
+/****************************/
+/***** EXTERN VARIABLES *****/
+/****************************/
+
 /* Map of the game */
 extern const int map[MAP_NUM_ROWS][MAP_NUM_COLS];
+extern int is_game_running;
+extern int ticks_last_frame;
+extern SDL_Window *window;
+extern SDL_Renderer *renderer;
+
+/****************************/
+/******** STRUCTURES ********/
+/****************************/
 
 /**
  * struct player_struct - player position,
@@ -49,7 +68,6 @@ extern const int map[MAP_NUM_ROWS][MAP_NUM_COLS];
  * @rotation_angle: rotation angle of the player
  * @walk_speed: walk speed of the player
  * @turn_speed: turn speed of the player
- * @is_game_running: TRUE if game is running, FALSE otherwise
  */
 
 typedef struct player_struct
@@ -63,10 +81,29 @@ typedef struct player_struct
 	float rotation_angle;
 	float walk_speed;
 	float turn_speed;
-	int is_game_running;
 } player_struct;
 
-struct ray_struct {
+/**
+ * struct ray_struct - raycasting structure, using rays
+ * to detect and render what is in front of me
+ * depending of its distance from the camera of
+ * my player
+ *
+ * @ray_angle: angle of the ray
+ * @distance: maximum distance of the ray
+ * @wall_hit_x: if wall is hit in x coordinates
+ * @wall_hit_y: if wall is hit in x coordinates
+ * @was_hit_vertical: check if there is a vertical collision
+ * to a wall, with the ray
+ * @ray_facing_up: the ray facing up
+ * @ray_facing_down: the ray facing down
+ * @ray_facing_right: the ray facing right
+ * @ray_facing_left: the ray facing left
+ * @wall_hit_content: the content of the wall that was hit
+ */
+
+struct ray_struct
+{
 	float ray_angle;
 	float distance;
 	float wall_hit_x;
@@ -77,31 +114,89 @@ struct ray_struct {
 	int ray_facing_right;
 	int ray_facing_left;
 	int wall_hit_content;
-} rays[NUM_RAYS];
+};
 
-/* Initialize */
-SDL_Window *initializeWindow(SDL_Window *window);
-SDL_Renderer *initializeRenderer(SDL_Window *window, SDL_Renderer *renderer);
-void render(SDL_Renderer *renderer, player_struct player);
-void renderMap(SDL_Renderer *renderer);
-void renderPlayer(SDL_Renderer *renderer, player_struct player);
-int mapHasWallAt(float player_x, float player_y);
-void castAllRays(player_struct player);
+typedef struct coll_detect
+{
+	/* horizontal */
+	int found_horizontal_wall_hit;
+	float horizontal_wall_hit_x;
+	float horizontal_wall_hit_y;
+	int horizontal_wall_content;
+	float next_horizontal_touch_x;
+	float next_horizontal_touch_y;
+	float horizontal_hit_distance;
+	/* vertical */
+	int found_vertical_wall_hit;
+	float vertical_wall_hit_x;
+	float vertical_wall_hit_y;
+	int vertical_wall_content;
+	float next_vertical_touch_x;
+	float next_vertical_touch_y;
+	float vertical_hit_distance;
+} coll_detect;
 
-/* Processes inputs */
-player_struct processInput(player_struct player);
+extern struct player_struct player;
+extern struct ray_struct rays[NUM_RAYS];
+extern struct coll_detect cd;
 
-/* Player movements */
-player_struct setup_player(void);
-player_struct update(float delta_time, int ticks_last_frame, player_struct player);
-float deltaTime(float delta_time, int ticks_last_frame);
-int ticksLastFrame(int ticks_last_frame);
-player_struct movePlayer(float delta_time, player_struct player);
+/***************************/
+/*** FUNCTIONS BY FILES ****/
+/***************************/
 
-/* Free */
-void destroyAndQuit(SDL_Window *window, SDL_Renderer *renderer);
+/* rendering */
+void initializeWindow(void);
+void initializeRenderer(void);
+void render(void);
+void renderMap(void);
+void renderPlayer(void);
 
-/* Errors */
+/* rendering_2 */
+void renderRays(void);
+
+/* player_movements */
+void update(void);
+void setup_player(void);
+void movePlayer(float delta_time);
+
+/* process_inputs */
+void processInput(void);
+
+/* collisions_detections */
+int mapHasWallAt(float x, float y);
+float distanceBetweenPoints(float x1, float x2, float y1, float y2);
+float normalizeAngle(float angle);
+void castRay(float ray_angle, int strip_id);
+void castAllRays(void);
+
+/* intercept */
+float horizontalInterceptY(float ray_angle);
+float horizontalInterceptX(float ray_angle);
+float verticalInterceptX(float ray_angle);
+float verticalInterceptY(float ray_angle);
+
+/* step */
+float horizontalStepX(float ray_angle);
+float horizontalStepY(float ray_angle);
+float verticalStepX(float ray_angle);
+float verticalStepY(float ray_angle);
+
+/* is_ray_facing */
+int isRayFacingDown(float ray_angle);
+int isRayFacingUp(float ray_angle);
+int isRayFacingRight(float ray_angle);
+int isRayFacingLeft(float ray_angle);
+
+/* search_wall */
+void setupCollDetect(void);
+void searchHorizontalWall(float ray_angle);
+void searchVerticalWall(float ray_angle);
+void smallestHitDistance(int strip_id, float ray_angle);
+
+/* free_quit */
+void destroyAndQuit(void);
+
+/* errors */
 void exitWithError(char *message);
 
 #endif /* MAZE_H */
