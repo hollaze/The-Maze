@@ -1,5 +1,5 @@
 #include "../headers/maze.h"
-#include <stdio.h>
+#include <stdlib.h>
 
 /**
  * destroyAndQuit - free renderer and window, then quit SDL
@@ -10,6 +10,10 @@
 
 void destroyAndQuit()
 {
+	/* Free the allocation in memory */
+	free(color_buffer);
+	/* Free texture */
+	SDL_DestroyTexture(color_buffer_texture);
 	/* Free renderer */
 	SDL_DestroyRenderer(renderer);
 	/* Free Window */

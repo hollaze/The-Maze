@@ -53,6 +53,11 @@ void render(void)
 	if (SDL_RenderClear(renderer) != 0)
 		exitWithError("render, cannot clear renderer");
 
+	generate3DProjection();
+
+	renderColorBuffer();
+	clearColorBuffer(0xFF000000);
+
 	renderMap();
 	renderRays();
 	renderPlayer();

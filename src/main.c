@@ -4,8 +4,10 @@
 
 int is_game_running = FALSE;
 int ticks_last_frame;
+Uint32 *color_buffer = NULL;
 SDL_Window *window = NULL;
 SDL_Renderer *renderer = NULL;
+SDL_Texture *color_buffer_texture = NULL;
 
 player_struct player;
 struct ray_struct rays[NUM_RAYS];
@@ -26,6 +28,7 @@ int main(void)
 	is_game_running = TRUE;
 
 	setup_player();
+	setupColorBuffer();
 
 	while (is_game_running)
 	{

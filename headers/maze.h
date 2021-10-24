@@ -19,7 +19,7 @@
 /* Scale of the minimap on the screen */
 /* going from 0 to 1 */
 /* 1 is full screen */
-#define MINIMAP_SCALE_FACTOR 1.0
+#define MINIMAP_SCALE_FACTOR 0.3
 
 /* Dynamic window */
 #define WINDOW_WIDTH (MAP_NUM_COLS * TILE_SIZE)
@@ -49,8 +49,10 @@
 extern const int map[MAP_NUM_ROWS][MAP_NUM_COLS];
 extern int is_game_running;
 extern int ticks_last_frame;
+extern Uint32 *color_buffer;
 extern SDL_Window *window;
 extern SDL_Renderer *renderer;
+extern SDL_Texture *color_buffer_texture;
 
 /****************************/
 /******** STRUCTURES ********/
@@ -153,6 +155,11 @@ void renderPlayer(void);
 
 /* rendering_2 */
 void renderRays(void);
+void renderColorBuffer(void);
+
+/* color_buffer */
+void setupColorBuffer(void);
+void clearColorBuffer(Uint32 color);
 
 /* player_movements */
 void update(void);
@@ -192,6 +199,9 @@ void setupCollDetect(void);
 void searchHorizontalWall(float ray_angle);
 void searchVerticalWall(float ray_angle);
 void smallestHitDistance(int strip_id, float ray_angle);
+
+/* 3D_generation */
+void generate3DProjection(void);
 
 /* free_quit */
 void destroyAndQuit(void);
