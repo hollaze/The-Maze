@@ -1,7 +1,7 @@
 #include "../headers/maze.h"
 
 /**
- * update - update delta time and player movements
+ * update - update delta time, player movements and raycasting
  * @delta_time: frame limitations
  * @ticks_last_frame: ticks from last frame
  * @player: player struct values
@@ -27,7 +27,7 @@ void update(void)
  * Return: player values
  */
 
-void setup_player(void)
+void setupPlayer(void)
 {
 	player.x = WINDOW_WIDTH / 2;  /* Center in x position */
 	player.y = WINDOW_HEIGHT / 2; /* Center in y position */
@@ -35,7 +35,7 @@ void setup_player(void)
 	player.height = 1;
 	player.turn_direction = 0;
 	player.walk_direction = 0;
-	player.rotation_angle = PI / 2; /* 90 degrees */
+	player.rotation_angle = -(PI / 2); /* 90 degrees up */
 	player.walk_speed = 120;
 	player.turn_speed = 60 * (PI / 180); /* degrees to radians -> 60 deg */
 }
@@ -56,16 +56,20 @@ void movePlayer(float delta_time)
 	float move_step;
 	float new_player_x, new_player_y;
 
+	/* from the rotation angle, handle the next angle rotations */
 	player.rotation_angle += player.turn_direction *
 				 player.turn_speed *
 				 delta_time;
+	/* check if movement is forward or backward and add speed to it */
 	move_step = player.walk_direction * player.walk_speed * delta_time;
 
+	/* movement in x position */
 	new_player_x = player.x + cos(player.rotation_angle) * move_step;
+	/* movement in y position */
 	new_player_y = player.y + sin(player.rotation_angle) * move_step;
 
 	/* set new player position only if player is not colliding with walls */
-	if (!mapHasWallAt(new_player_x, new_player_y))
+	if (mapHasWallAt(new_player_x, new_player_y) == 0)
 	{
 		player.x = new_player_x;
 		player.y = new_player_y;
