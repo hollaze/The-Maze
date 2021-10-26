@@ -1,5 +1,11 @@
 #include "../headers/maze.h"
 
+/**
+ * setupCollDetect - seting up the coll_detect struct values
+ *
+ * Return: void
+ */
+
 void setupCollDetect(void)
 {
 	/* horizontal */
@@ -14,11 +20,20 @@ void setupCollDetect(void)
 	cd.vertical_wall_content = 0;
 }
 
+/**
+ * searchHorizontalWall - continue to cast the ray until a horizontal
+ * wall is found or that it is the end of the window
+ *
+ * @ray_angle: the angle of the ray being cast
+ *
+ * Return: void
+ */
+
 void searchHorizontalWall(float ray_angle)
 {
 	float to_check_x, to_check_y;
 
-	/* incrementing step_x and step_y until a wall is found */
+	/* incrementing the ray distance until a horizontal wall is found */
 	while (cd.next_horizontal_touch_x >= 0 &&
 	       cd.next_horizontal_touch_x <= WINDOW_WIDTH &&
 	       cd.next_horizontal_touch_y >= 0 &&
@@ -35,7 +50,7 @@ void searchHorizontalWall(float ray_angle)
 			cd.horizontal_wall_hit_x = cd.next_horizontal_touch_x;
 			cd.horizontal_wall_hit_y = cd.next_horizontal_touch_y;
 			cd.horizontal_wall_content =
-			    map[(int)floor(to_check_y / TILE_SIZE)][(int)floor(to_check_x / TILE_SIZE)];
+			map[(int)floor(to_check_y / TILE_SIZE)][(int)floor(to_check_x / TILE_SIZE)];
 			cd.found_horizontal_wall_hit = TRUE;
 			break;
 		}
@@ -47,11 +62,20 @@ void searchHorizontalWall(float ray_angle)
 	}
 }
 
+/**
+ * searchVerticalWall - continue to cast the ray until a vertical
+ * wall is found or that it is the end of the window
+ *
+ * @ray_angle: the angle of the ray being cast
+ *
+ * Return: void
+ */
+
 void searchVerticalWall(float ray_angle)
 {
 	float to_check_x, to_check_y;
 
-	/* incrementing step_x and step_y until a wall is found */
+	/* incrementing the ray distance until a vertical wall is found */
 	while (cd.next_vertical_touch_x >= 0 &&
 	       cd.next_vertical_touch_x <= WINDOW_WIDTH &&
 	       cd.next_vertical_touch_y >= 0 &&
@@ -68,7 +92,7 @@ void searchVerticalWall(float ray_angle)
 			cd.vertical_wall_hit_x = cd.next_vertical_touch_x;
 			cd.vertical_wall_hit_y = cd.next_vertical_touch_y;
 			cd.vertical_wall_content =
-			    map[(int)floor(to_check_y / TILE_SIZE)][(int)floor(to_check_x / TILE_SIZE)];
+			map[(int)floor(to_check_y / TILE_SIZE)][(int)floor(to_check_x / TILE_SIZE)];
 			cd.found_vertical_wall_hit = TRUE;
 			break;
 		}
@@ -80,21 +104,32 @@ void searchVerticalWall(float ray_angle)
 	}
 }
 
+/**
+ * smallestHitDistance - determine the smallest hit distance between
+ * the horizontal or vertical hit of the ray on the wall or on the end
+ * of the window
+ *
+ * @strip_id: the ray being cast
+ * @ray_angle: angle of the ray being cast
+ *
+ * Return: void
+ */
+
 void smallestHitDistance(int strip_id, float ray_angle)
 {
 	/* calculates horizontal and vertical hit distances and choose smallest one */
 
 	cd.horizontal_hit_distance = cd.found_horizontal_wall_hit
-				      ? distanceBetweenPoints(player.x, player.y,
-							      cd.horizontal_wall_hit_x,
-							      cd.horizontal_wall_hit_y)
-				      : FLT_MAX;
+					 ? distanceBetweenPoints(player.x, player.y,
+								 cd.horizontal_wall_hit_x,
+								 cd.horizontal_wall_hit_y)
+					 : FLT_MAX;
 
 	cd.vertical_hit_distance = cd.found_vertical_wall_hit
-				    ? distanceBetweenPoints(player.x, player.y,
-							    cd.vertical_wall_hit_x,
-							    cd.vertical_wall_hit_y)
-				    : FLT_MAX;
+				       ? distanceBetweenPoints(player.x, player.y,
+							       cd.vertical_wall_hit_x,
+							       cd.vertical_wall_hit_y)
+				       : FLT_MAX;
 
 	if (cd.vertical_hit_distance < cd.horizontal_hit_distance)
 	{
