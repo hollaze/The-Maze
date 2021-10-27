@@ -22,9 +22,7 @@ int mapHasWallAt(float player_x, float player_y)
 	    player_y < 0 || player_y > WINDOW_HEIGHT)
 		return (TRUE);
 
-	/* Creating colliders */
-	/* flooring to pass float into lower int */
-	/* divinding by TILE_SIZE because the map is bigger but not its x and y */
+	/* flooring so that the player stay outside of the wall */
 	map_grid_index_x = floor(player_x / TILE_SIZE);
 	map_grid_index_y = floor(player_y / TILE_SIZE);
 
@@ -54,11 +52,11 @@ float distanceBetweenPoints(float x1, float y1, float x2, float y2)
 
 /**
  * normalizeAngle - keep the ray_angle between 0 and 2PI
- * 
+ *
  * @ray_angle: the angle of the ray to normalize
- * 
+ *
  * Return: the normalized value
- */ 
+ */
 
 float normalizeAngle(float ray_angle)
 {

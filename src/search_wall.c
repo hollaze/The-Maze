@@ -1,26 +1,6 @@
 #include "../headers/maze.h"
 
 /**
- * setupCollDetect - seting up the coll_detect struct values
- *
- * Return: void
- */
-
-void setupCollDetect(void)
-{
-	/* horizontal */
-	cd.found_horizontal_wall_hit = FALSE;
-	cd.horizontal_wall_hit_x = 0;
-	cd.horizontal_wall_hit_y = 0;
-	cd.horizontal_wall_content = 0;
-	/* vertical */
-	cd.found_vertical_wall_hit = FALSE;
-	cd.vertical_wall_hit_x = 0;
-	cd.vertical_wall_hit_y = 0;
-	cd.vertical_wall_content = 0;
-}
-
-/**
  * searchHorizontalWall - continue to cast the ray until a horizontal
  * wall is found or that it is the end of the window
  *

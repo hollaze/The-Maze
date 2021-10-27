@@ -19,14 +19,19 @@
 /* Scale of the minimap on the screen */
 /* going from 0 to 1 */
 /* 1 is full screen */
-#define MINIMAP_SCALE_FACTOR 0.3
+#define MINIMAP_SCALE_FACTOR 1
 
 /* Dynamic window */
 #define WINDOW_WIDTH (MAP_NUM_COLS * TILE_SIZE)
 #define WINDOW_HEIGHT (MAP_NUM_ROWS * TILE_SIZE)
 
+/* Texture size and also walls size */
+#define TEXTURE_WIDTH 64
+#define TEXTURE_HEIGHT 64
+
 /* Field Of View */
 /* convert from degrees to radians */
+/* first value is the degree of the field of view angle */
 #define FOV_ANGLE (60 * (PI / 180))
 /* Number of rays is 1 per pixel of the window width */
 /* within the field of view (limited by the field of view) */
@@ -47,32 +52,47 @@
 
 /* Map of the game */
 extern const int map[MAP_NUM_ROWS][MAP_NUM_COLS];
-extern int is_game_running;
-extern int ticks_last_frame;
-extern Uint32 *color_buffer;
-extern SDL_Window *window;
-extern SDL_Renderer *renderer;
-extern SDL_Texture *color_buffer_texture;
 
 /****************************/
 /******** STRUCTURES ********/
 /****************************/
 
 /**
+ * struct rendering - used to render things
+ *
+ * @window: window
+ * @renderer: renderer
+ * @color_buffer_texture: texture
+ * @color_buffer: color buffer
+ * @wall_texture: wall texture
+ */
+
+struct rendering
+{
+	SDL_Window *window;
+	SDL_Renderer *renderer;
+	SDL_Texture *color_buffer_texture;
+	Uint32 *color_buffer;
+	Uint32 *wall_texture;
+} r;
+
+/**
  * struct player_struct - player position,
  * how big the player is, player movement
+ *
  * @x: player x position
  * @y: player y position
  * @width: width of the player
  * @height: height of the player
  * @turn_direction: direction the player turn to
  * @walk_direction: direction the player walk to
- * @rotation_angle: rotation angle of the player
+ * @rotation_angle: the angle the player is looking at, at spawn
  * @walk_speed: walk speed of the player
  * @turn_speed: turn speed of the player
+ * @is_game_running: game is running: TRUE else: FALSE
  */
 
-typedef struct player_struct
+struct player_struct
 {
 	float x;
 	float y;
@@ -83,7 +103,8 @@ typedef struct player_struct
 	float rotation_angle;
 	float walk_speed;
 	float turn_speed;
-} player_struct;
+	int is_game_running;
+} player;
 
 /**
  * struct ray_struct - raycasting structure, using rays
@@ -92,9 +113,9 @@ typedef struct player_struct
  * my player
  *
  * @ray_angle: angle of the ray
- * @distance: maximum distance of the ray
- * @wall_hit_x: if wall is hit in x coordinates
- * @wall_hit_y: if wall is hit in x coordinates
+ * @distance: ray distance from player to wall
+ * @wall_hit_x: wall is hit in x coordinates
+ * @wall_hit_y: wall is hit in x coordinates
  * @was_hit_vertical: check if there is a vertical collision
  * to a wall, with the ray
  * @ray_facing_up: the ray facing up
@@ -116,9 +137,34 @@ struct ray_struct
 	int ray_facing_right;
 	int ray_facing_left;
 	int wall_hit_content;
-};
+} rays[NUM_RAYS];
 
-typedef struct coll_detect
+/**
+ * struct coll_detect - detect the ray collision
+ *
+ *** HORIZONTAL ***
+ * @found_horizontal_wall_hit: TRUE for wall hit, FALSE otherwise
+ * @horizontal_wall_hit_x: x coordinates of the ray hit on wall
+ * @horizontal_wall_hit_y: y coordinates of the ray hit on wall
+ * @horizontal_wall_content: content of the wall at ray hit
+ * @next_horizontal_touch_x: check at next tile hit if ray
+ * in x coordinates is a wall
+ * @next_horizontal_touch_y: check at next tile hit if ray
+ * in y coordinates is a wall
+ * @horizontal_hit_distance: necessary to chose the smallest hit distance
+ *** VERTICAL ***
+ * @found_vertical_wall_hit: TRUE for wall hit, FALSE otherwise
+ * @vertical_wall_hit_x: x coordinates of the ray hit on wall
+ * @vertical_wall_hit_y: y coordinates of the ray hit on wall
+ * @vertical_wall_content: content of the wall at ray hit
+ * @next_vertical_touch_x: check at next tile hit if ray
+ * in x coordinates is a wall
+ * @next_vertical_touch_y: check at next tile hit if ray
+ * in y coordinates is a wall
+ * @vertical_hit_distance: necessary to chose the smallest hit distance
+ */
+
+struct coll_detect
 {
 	/* horizontal */
 	int found_horizontal_wall_hit;
@@ -136,15 +182,16 @@ typedef struct coll_detect
 	float next_vertical_touch_x;
 	float next_vertical_touch_y;
 	float vertical_hit_distance;
-} coll_detect;
-
-extern struct player_struct player;
-extern struct ray_struct rays[NUM_RAYS];
-extern struct coll_detect cd;
+} cd;
 
 /***************************/
 /*** FUNCTIONS BY FILES ****/
 /***************************/
+
+/* setup_struct */
+void setupRendering(void);
+void setupPlayer(void);
+void setupCollDetect(void);
 
 /* rendering */
 void initializeWindow(void);
@@ -161,9 +208,14 @@ void renderColorBuffer(void);
 void setupColorBuffer(void);
 void clearColorBuffer(Uint32 color);
 
+/* texture */
+void initializeTexture(void);
+void setupWallTexure(void);
+
 /* player_movements */
-void update(void);
-void setup_player(void);
+float deltaTime(float delta_time, int ticks_last_frame);
+int ticksLastFrame(int ticks_last_frame);
+void update(float delta_time, int ticks_last_frame);
 void movePlayer(float delta_time);
 
 /* process_inputs */
@@ -195,7 +247,6 @@ int isRayFacingRight(float ray_angle);
 int isRayFacingLeft(float ray_angle);
 
 /* search_wall */
-void setupCollDetect(void);
 void searchHorizontalWall(float ray_angle);
 void searchVerticalWall(float ray_angle);
 void smallestHitDistance(int strip_id, float ray_angle);
