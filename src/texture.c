@@ -2,12 +2,12 @@
 #include <stdlib.h>
 
 /**
- * initializeTexture - initialize the texture of the walls
+ * initializeTextureColor - initialize the texture color of the walls
  *
  * Return: void
  */
 
-void initializeTexture(void)
+void initializeTextureColor(void)
 {
 	/* display color buffer texture */
 	r.color_buffer_texture = SDL_CreateTexture(r.renderer,
@@ -20,9 +20,53 @@ void initializeTexture(void)
 		exitWithError("setupColorBuffer, color_buffer_texture is NULL");
 }
 
+/**
+ * allocateColorBuffer - allocating memory for the color buffer
+ *
+ * Return: void
+ */
+
+void allocateColorBuffer(void)
+{
+	/* allocate enough memory to hole the entire screen inside the buffer */
+	r.color_buffer = (uint32_t *)malloc(sizeof(uint32_t) *
+					    WINDOW_WIDTH *
+					    WINDOW_HEIGHT);
+	if (r.color_buffer == NULL)
+		exitWithError("allocateColorBuffer, color_buffer is NULL");
+}
+
+/**
+ * clearColorBuffer - store the color of the walls in the buffer
+ *
+ * @color: the color of the walls
+ *
+ * Return: color_buffer
+ */
+
+void clearColorBuffer(uint32_t color)
+{
+	int x, y;
+
+	for (x = 0; x < WINDOW_WIDTH; x++)
+	{
+		for (y = 0; y < WINDOW_HEIGHT; y++)
+		{
+			r.color_buffer[(WINDOW_WIDTH * y) + x] = color;
+		}
+	}
+}
+
+
 /* images to load from images directory */
 static const char *textureFileNames[NUM_TEXTURES] = {
     "./images/bush.png"};
+
+/**
+ * loadWallTextures - load every wall texture
+ *
+ * Return: void
+ */
 
 void loadWallTextures(void)
 {
@@ -42,19 +86,8 @@ void loadWallTextures(void)
 				wall_textures[i].upng_texture = upng;
 				wall_textures[i].width = upng_get_width(upng);
 				wall_textures[i].height = upng_get_height(upng);
-				wall_textures[i].texture_buffer = (uint32_t*)upng_get_buffer(upng);
+				wall_textures[i].texture_buffer = (uint32_t *)upng_get_buffer(upng);
 			}
 		}
 	}
 }
-
-void freeWallTexture(void)
-{
-	int i;
-	for (i = 0; i < NUM_TEXTURES; i++)
-	{
-		upng_free(wall_textures[i].upng_texture);
-	}
-}
-
-/* Create new texture with width and height to the TEXTURE_WIDTH and TEXTURE_HEIGHT */
