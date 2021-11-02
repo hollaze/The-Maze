@@ -20,7 +20,7 @@
 /* Scale of the minimap on the screen */
 /* going from 0 to 1 */
 /* 1 is full screen */
-#define MINIMAP_SCALE_FACTOR 0.4
+#define MINIMAP_SCALE_FACTOR 0
 
 /* Dynamic window */
 #define WINDOW_WIDTH (MAP_NUM_COLS * TILE_SIZE)
