@@ -1,13 +1,13 @@
 #include "../headers/maze.h"
 
 /**
- * horizontalStepY - for each intersection of the ray on horizontal tiles,
+ * horizontalStepX - for each intersection of the ray on horizontal tiles,
  * get the adjacent side size of the rectangle triangle
  * also named delta x
- * 
+ *
  * @ray_angle: the angle of the ray in which
  * we are measuring the points distance
- * 
+ *
  * Return: distance between x points of the ray
  * touching horizontal side of the tiles
  */
@@ -28,10 +28,10 @@ float horizontalStepX(float ray_angle)
  * horizontalStepY - for each intersection of the ray on horizontal tiles,
  * get the opposite side size of the rectangle triangle
  * also named delta y
- * 
+ *
  * @ray_angle: the angle of the ray in which
  * we are measuring the points distance
- * 
+ *
  * Return: distance between y points of the ray
  * touching horizontal side of the tiles
  */
@@ -51,10 +51,10 @@ float horizontalStepY(float ray_angle)
  * verticalStepX - for each intersection of the ray on vertical tiles,
  * get the adjacent side size of the rectangle triangle
  * also named delta x
- * 
+ *
  * @ray_angle: the angle of the ray in which
  * we are measuring the points distance
- * 
+ *
  * Return: distance between x points of the ray
  * touching vertical side of the tiles
  */
@@ -74,10 +74,10 @@ float verticalStepX(float ray_angle)
  * verticalStepY - for each intersection of the ray on vertical tiles,
  * get the opposite side size of the rectangle triangle
  * also named delta y
- * 
+ *
  * @ray_angle: the angle of the ray in which
  * we are measuring the points distance
- * 
+ *
  * Return: distance between y points of the ray
  * touching vertical side of the tiles
  */

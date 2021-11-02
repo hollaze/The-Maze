@@ -27,7 +27,7 @@ void renderRays(void)
 
 /**
  * renderColorBufferTexture - update the texture
- * 
+ *
  * Return: void
  */
 

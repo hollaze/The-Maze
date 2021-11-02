@@ -68,7 +68,6 @@ extern const int map[MAP_NUM_ROWS][MAP_NUM_COLS];
  * @renderer: renderer
  * @color_buffer_texture: texture
  * @color_buffer: color buffer
- * @wall_texture: wall texture
  */
 
 struct rendering
@@ -143,7 +142,7 @@ struct ray_struct
 } rays[NUM_RAYS];
 
 /**
- * struct coll_detect - detect the ray collision
+ * struct coll_detect_struct - detect the ray collision
  *
  *** HORIZONTAL ***
  * @found_horizontal_wall_hit: TRUE for wall hit, FALSE otherwise
@@ -188,12 +187,12 @@ struct coll_detect_struct
 } cd;
 
 /**
- * struct texture_t - the wall textures
+ * struct wall_texture_struct - the wall textures
  *
- * @wall_texture: wall texture to render
- * @texure_buffer: texture buffer
+ * @upng_texture: png texture to render
  * @width: texture width
  * @height: texture height
+ * @texture_buffer: texture buffer
  */
 
 struct wall_texture_struct
@@ -229,7 +228,7 @@ void allocateColorBuffer(void);
 void clearColorBuffer(uint32_t color);
 
 /* texture */
-void initializeTexture(void);
+void initializeTextureColor(void);
 void loadWallTextures(void);
 void freeWallTexture(void);
 

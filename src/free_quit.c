@@ -2,6 +2,22 @@
 #include <stdlib.h>
 
 /**
+ * freeWallTexture - free the wall textures
+ *
+ * Return: void
+ */
+
+void freeWallTexture(void)
+{
+	int i;
+
+	for (i = 0; i < NUM_TEXTURES; i++)
+	{
+		upng_free(wall_textures[i].upng_texture);
+	}
+}
+
+/**
  * destroyAndQuit - free, then quit SDL
  *
  * Return: void

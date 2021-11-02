@@ -107,9 +107,6 @@ void castRay(float ray_angle, int strip_id)
  * on ray per pixel of the window (WINDOW_WIDTH)
  * cast all rays per frame: raycasting
  *
- * @player: player struct values
- * @coll_detect: return ray collision and detections values
- *
  * Return: void
  */
 

@@ -57,10 +57,9 @@ void clearColorBuffer(uint32_t color)
 	}
 }
 
-
 /* images to load from images directory */
 static const char *textureFileNames[NUM_TEXTURES] = {
-    "./images/bush.png"};
+"./images/bush.png"};
 
 /**
  * loadWallTextures - load every wall texture
