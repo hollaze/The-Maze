@@ -10,7 +10,6 @@
 void setupRendering(void)
 {
 	r.color_buffer = NULL;
-	r.wall_texture = NULL;
 	r.window = NULL;
 	r.renderer = NULL;
 	r.color_buffer_texture = NULL;
