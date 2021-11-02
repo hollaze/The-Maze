@@ -1,15 +1,22 @@
 #include "../headers/maze.h"
 
+/**
+ * renderRays - render ray by ray the rays for raycasting
+ *
+ * Return: void
+ */
+
 void renderRays(void)
 {
 	int i;
 
-	if (SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255) != 0)
+	if (SDL_SetRenderDrawColor(r.renderer, 255, 0, 0, 255) != 0)
 		exitWithError("renderRays, cannot render draw color");
 
 	for (i = 0; i < NUM_RAYS; i++)
 	{
-		if (SDL_RenderDrawLine(renderer,
+		/* rendering the rays */
+		if (SDL_RenderDrawLine(r.renderer,
 				       MINIMAP_SCALE_FACTOR * player.x,
 				       MINIMAP_SCALE_FACTOR * player.y,
 				       MINIMAP_SCALE_FACTOR * rays[i].wall_hit_x,
@@ -18,14 +25,20 @@ void renderRays(void)
 	}
 }
 
-void renderColorBuffer(void)
+/**
+ * renderColorBufferTexture - update the texture
+ * 
+ * Return: void
+ */
+
+void renderColorBufferTexture(void)
 {
-	if (SDL_UpdateTexture(color_buffer_texture,
+	if (SDL_UpdateTexture(r.color_buffer_texture,
 			      NULL,
-			      color_buffer,
-			      (int)((Uint32)WINDOW_WIDTH * sizeof(Uint32))) != 0)
-		exitWithError("clearColorBuffer, cannot update texture");
-	
-	if (SDL_RenderCopy(renderer, color_buffer_texture, NULL, NULL) != 0)
-		exitWithError("renderColorBuffer, cannot render copy");
+			      r.color_buffer,
+			      (int)WINDOW_WIDTH * sizeof(uint32_t)) != 0)
+		exitWithError("renderColorBufferTexture, cannot update texture");
+
+	if (SDL_RenderCopy(r.renderer, r.color_buffer_texture, NULL, NULL) != 0)
+		exitWithError("renderColorBufferTexture, cannot render copy");
 }

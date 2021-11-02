@@ -18,7 +18,7 @@ void initializeWindow(void)
 				    SDL_WINDOWPOS_CENTERED,
 				    WINDOW_WIDTH,
 				    WINDOW_HEIGHT,
-				    SDL_WINDOW_MINIMIZED);
+				    SDL_WINDOW_MAXIMIZED);
 
 	if (r.window == NULL)
 		exitWithError("initializeWindow, cannot create SDL window");
@@ -60,6 +60,11 @@ void render(void)
 		exitWithError("render, cannot render color");
 	if (SDL_RenderClear(r.renderer) != 0)
 		exitWithError("render, cannot clear renderer");
+
+	generate3DProjection();
+
+	renderColorBufferTexture();
+	clearColorBuffer(0xFF000000);
 
 	renderMap();
 	renderRays();
