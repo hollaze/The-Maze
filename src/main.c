@@ -16,7 +16,7 @@ int main(void)
 	setupRendering();
 	initializeWindow();
 	initializeRenderer();
-	initializeTexture();
+	initializeTextureColor();
 	loadWallTextures();
 
 	if (r.window == NULL || r.renderer == NULL)
