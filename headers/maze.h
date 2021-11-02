@@ -2,6 +2,7 @@
 #define MAZE_H
 
 #include <SDL2/SDL.h>
+#include "../headers/upng.h"
 
 /****************************/
 /********** MACROS **********/
@@ -19,7 +20,7 @@
 /* Scale of the minimap on the screen */
 /* going from 0 to 1 */
 /* 1 is full screen */
-#define MINIMAP_SCALE_FACTOR 1
+#define MINIMAP_SCALE_FACTOR 0.4
 
 /* Dynamic window */
 #define WINDOW_WIDTH (MAP_NUM_COLS * TILE_SIZE)
@@ -28,6 +29,9 @@
 /* Texture size and also walls size */
 #define TEXTURE_WIDTH 64
 #define TEXTURE_HEIGHT 64
+
+/* Number of textures */
+#define NUM_TEXTURES 1
 
 /* Field Of View */
 /* convert from degrees to radians */
@@ -38,7 +42,7 @@
 #define NUM_RAYS WINDOW_WIDTH
 
 /* Frame Per Second */
-#define FPS 60
+#define FPS 100
 /* Number of Frame Per Second */
 #define FRAME_TIME_LENGTH (1000 / FPS)
 
@@ -72,8 +76,7 @@ struct rendering
 	SDL_Window *window;
 	SDL_Renderer *renderer;
 	SDL_Texture *color_buffer_texture;
-	Uint32 *color_buffer;
-	Uint32 *wall_texture;
+	uint32_t *color_buffer;
 } r;
 
 /**
@@ -164,7 +167,7 @@ struct ray_struct
  * @vertical_hit_distance: necessary to chose the smallest hit distance
  */
 
-struct coll_detect
+struct coll_detect_struct
 {
 	/* horizontal */
 	int found_horizontal_wall_hit;
@@ -184,6 +187,23 @@ struct coll_detect
 	float vertical_hit_distance;
 } cd;
 
+/**
+ * struct texture_t - the wall textures
+ *
+ * @wall_texture: wall texture to render
+ * @texure_buffer: texture buffer
+ * @width: texture width
+ * @height: texture height
+ */
+
+struct wall_texture_struct
+{
+	upng_t *upng_texture;
+	int width;
+	int height;
+	uint32_t *texture_buffer;
+} wall_textures[NUM_TEXTURES];
+
 /***************************/
 /*** FUNCTIONS BY FILES ****/
 /***************************/
@@ -202,15 +222,16 @@ void renderPlayer(void);
 
 /* rendering_2 */
 void renderRays(void);
-void renderColorBuffer(void);
+void renderColorBufferTexture(void);
 
 /* color_buffer */
-void setupColorBuffer(void);
-void clearColorBuffer(Uint32 color);
+void allocateColorBuffer(void);
+void clearColorBuffer(uint32_t color);
 
 /* texture */
 void initializeTexture(void);
-void setupWallTexure(void);
+void loadWallTextures(void);
+void freeWallTexture(void);
 
 /* player_movements */
 float deltaTime(float delta_time, int ticks_last_frame);
