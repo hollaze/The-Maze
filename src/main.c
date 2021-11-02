@@ -16,10 +16,14 @@ int main(void)
 	setupRendering();
 	initializeWindow();
 	initializeRenderer();
+	initializeTexture();
+	loadWallTextures();
 
 	if (r.window == NULL || r.renderer == NULL)
-		exitWithError("main.c : window or renderer are NULL");
+		exitWithError("main, window or renderer is NULL");
 	player.is_game_running = TRUE;
+
+	allocateColorBuffer();
 
 	while (player.is_game_running)
 	{
