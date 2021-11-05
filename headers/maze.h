@@ -20,7 +20,7 @@
 /* Scale of the minimap on the screen */
 /* going from 0 to 1 */
 /* 1 is full screen */
-#define MINIMAP_SCALE_FACTOR 0
+#define MINIMAP_SCALE_FACTOR 0.3
 
 /* Dynamic window */
 #define WINDOW_WIDTH (MAP_NUM_COLS * TILE_SIZE)
@@ -202,6 +202,22 @@ struct wall_texture_struct
 	int height;
 	uint32_t *texture_buffer;
 } wall_textures[NUM_TEXTURES];
+
+/**
+ * struct generation_3D_struct - variables for the generate3DProjection funct
+ *
+ * @wall_strip_height: wall height
+ * @wall_top_pixel: top pixel of the wall
+ * @wall_bottom_pixel: bottom pixel of the wall
+ * @texture_offset_x: texture offset in x of the walls
+ * @texture_offset_y: texture offset in y of the walls
+ * @distance_from_top: distance from wall top
+ * @texture_number: the texture number
+ * @perpendicular_distance: perpendicular distance from the wall
+ * @distance_from_projection: distance from the walls
+ * @projected_wall_height: the projected height of the wall
+ * @texel_color: the texture color
+ */
 
 struct generation_3D_struct
 {
