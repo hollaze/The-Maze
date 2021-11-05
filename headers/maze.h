@@ -203,6 +203,21 @@ struct wall_texture_struct
 	uint32_t *texture_buffer;
 } wall_textures[NUM_TEXTURES];
 
+struct generation_3D_struct
+{
+	int wall_strip_height;
+	int wall_top_pixel;
+	int wall_bottom_pixel;
+	int texture_offset_x;
+	int texture_offset_y;
+	int distance_from_top;
+	int texture_number;
+	float perpendicular_distance;
+	float distance_from_projection;
+	float projected_wall_height;
+	uint32_t texel_color;
+} gen;
+
 /***************************/
 /*** FUNCTIONS BY FILES ****/
 /***************************/
@@ -272,6 +287,10 @@ void searchVerticalWall(float ray_angle);
 void smallestHitDistance(int strip_id, float ray_angle);
 
 /* 3D_generation */
+void wallTopPixel(void);
+void wallBottomPixel(void);
+void textureOffsetX(int i);
+void renderWallTexture(int y, int i);
 void generate3DProjection(void);
 
 /* free_quit */
