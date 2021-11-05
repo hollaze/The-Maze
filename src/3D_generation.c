@@ -1,5 +1,11 @@
 #include "../headers/maze.h"
 
+/**
+ * generate3DProjection - generate a 3D projection from strips and raycasting
+ *
+ * Return: void
+ */
+
 void generate3DProjection(void)
 {
 	int i, y;
