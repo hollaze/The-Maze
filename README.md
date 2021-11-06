@@ -1,6 +1,6 @@
 # The-Maze
 
-![](readme_images/ezgif.com-gif-maker_readme.gif)
+![](readme_images/ezgif.com-gif-maker_readme.jpg)
 
 [Project landing page](https://deperiersa.wixsite.com/the-maze)
 
