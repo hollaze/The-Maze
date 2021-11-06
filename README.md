@@ -1,8 +1,6 @@
 # The-Maze
 
-<p align="center>
-        <img src="https://github.com/hollaze/The-Maze/tree/GameDev/readme_images">
-</p>
+![](readme_images/ezgif.com-gif-maker_readme.gif)
 
 [Project landing page](https://deperiersa.wixsite.com/the-maze)
 
