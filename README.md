@@ -1,6 +1,6 @@
 # The-Maze
 
-![The Maze](https://static.wixstatic.com/media/84ee3f_4a26baa6f9f345668532c07e1d15abe0~mv2.gif)
+![Uploading ezgif.com-gif-maker.gif…]()
 https://deperiersa.wixsite.com/the-maze The maze Site
 
 Installations before launching the game:
