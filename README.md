@@ -1,7 +1,8 @@
 # The-Maze
 
 ![Uploading ezgif.com-gif-maker.gif…]()
-https://deperiersa.wixsite.com/the-maze The maze Site
+
+[Project landing page](https://deperiersa.wixsite.com/the-maze)
 
 Installations before launching the game:
 
