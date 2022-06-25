@@ -8,18 +8,22 @@
 
 Installations before launching the game:
 
-Ubuntu: sudo apt-get install libsdl2
+Ubuntu: sudo apt-get install libsdl2-dev
+
 Install hombebrew for mac: https://brew.sh/
 MacOS: brew install sdl2
 
-SDL site: https://www.libsdl.org/download-2.0.php
+SDL website: https://www.libsdl.org/download-2.0.php
 
 ## How to play
 
-To play, clone the repository with git and execute the executable (a.out)
-*(Only availaible under linux of macOS)*
+Install the SDL2 library, clone the repository, then using the MakeFile, you can use the
+- make
+- make run
 
-The player can use the arrows keys to move inside the maze.
+commands or by executing the executable (./The_Maze).
+
+The player can use the arrows keys to move inside the maze, there is no exit.
 
 ## Table of content: 
 
@@ -29,7 +33,7 @@ The player can use the arrows keys to move inside the maze.
 - **How to develop without a game engine**
 - **Development phases** - render window, player movement,raycasting, 3Dgeneration
 - **What I could have done more** - sprites: monsters, decorations, gun in player hands; rain
-- **All of this Readme sources**
+- **Sources**
 - **Author**
 
 
@@ -94,7 +98,7 @@ Now that we know how the SDL window work, I can now explain to you the main step
 - **Player collisions**
 - **Raycasting**
 - **Ray collision and detection**
-- **3D generation**
+- **Fake 3D generation**
 - **Ceiling, Floor and Wall textures**
 
 
@@ -117,17 +121,25 @@ Before starting anything in SDL, you need to initialize it with the SDL_init fun
 ### **Player collisions**
 ### **Raycasting**
 ### **Ray collision and detection**
-### **3D generation**
+### **Fake 3D generation**
 ### **Ceiling, Floor and Wall textures**
 
 
 ## What I could have done more
 
 
-## All of this Readme sources
+## Sources
 
+https://www.libsdl.org/download-2.0.php
 
+https://lodev.org/cgtutor/raycasting.html
+
+https://www.mathsisfun.com/algebra/trigonometry.html
+
+https://github.com/elanthis/upng
+
+(And some youtube videos)
 
 ## Author
 
-
+Alrick Deperiers <deperiers.a@gmail.com>
