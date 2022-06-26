@@ -29,7 +29,7 @@ The player can use the arrows keys to move inside the maze, there is no exit.
 - **What is The Maze**
 - **Inspiration**
 - **How to develop without a game engine**
-- **What I could have done more** - sprites: monsters, decorations, gun in player hands; rain
+- **What I could have done more**
 - **Sources**
 - **Author**
 
@@ -49,7 +49,7 @@ on this engine, but, I told myself: "But how do you do a game without a game eng
 ## What is The Maze
 
 The Maze is a game in which the player spawn at the center of the map, and is locked
-in a maze *(I had quite the inspiration for the project name right?)*, the player can try to find the exit *(but i did no do any, evil laught)*.
+in a maze *(I had quite the inspiration for the project name right?)*, the player can try to find the exit *(but there is none, evil laught)*.
 
 ## Inspiration
 
@@ -71,7 +71,7 @@ SDL site: https://www.libsdl.org/download-2.0.php
 
 - I could have implemented an exit to my labyrinth / EndGame
 - I could have implemented objects
-- I could have implemented enemies (Like Wolfeinstein3D)
+- I could have implemented enemies (Like Wolfeinstein3D) / gun in players hands
 - I could have implemented rain
 
 And so on, only imagination and skills can make it possible.
