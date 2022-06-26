@@ -6,8 +6,6 @@
 
 ## Install
 
-Installations before launching the game:
-
 Ubuntu: sudo apt-get install libsdl2-dev
 
 Install hombebrew for mac: https://brew.sh/
@@ -31,7 +29,6 @@ The player can use the arrows keys to move inside the maze, there is no exit.
 - **What is The Maze**
 - **Inspiration**
 - **How to develop without a game engine**
-- **Development phases** - render window, player movement,raycasting, 3Dgeneration
 - **What I could have done more** - sprites: monsters, decorations, gun in player hands; rain
 - **Sources**
 - **Author**
@@ -69,64 +66,15 @@ For this project, the SDL library was useful for creating a window, rendering th
 
 SDL site: https://www.libsdl.org/download-2.0.php
 
-## Development phases
-
-notes:
-- In this section the development phases will be done without too much code explanations the idea here is that you understand how it works and how I have done it, so if you see something that is not explained fully like *(example)* the SDL functions, it is because I do not want to tell you each parameter this function has to pass. So if you are curious, I will let you check by yourself.
-
-- A lot of functions in SDL return something if it works, something else if it do not, be sure to check with conditions and put an error message if it doesn't.
-
-
-Before rendering things, the SDL library user have to know that there is some specificities in the SDL window, like the x and y axis direction or again the trigonometry circle.
-
-![](readme_images/axe_trigonometry.png)
-
-So yes, the more you go down on y axis the higher the value,
-the more you go on the right on x axis, the higher the value,
-and trigonometry circle is inversed, for example in the image the +PI/2 is -PI/2
-
-the x and y begin at 0, their 0 is the upleft corner of the window.
-
-Now that we know how the SDL window work, I can now explain to you the main steps of development of The Maze:
-
-- **Creating a window**
-- **Rendering on the window**
-- **Game loop**
-- **Player and Player movements**
-- **Delta Time**
-- **The map**
-- **Player collisions**
-- **Raycasting**
-- **Ray collision and detection**
-- **Fake 3D generation**
-- **Ceiling, Floor and Wall textures**
-
-
-### **Creating a window**
-
-To create a window in SDL, it is quite simple, SDL offers multiples functions to work with it: 
-*[SDL functions](https://wiki.libsdl.org/CategoryAPI)*
-*[Beginner tuto SDL](https://zestedesavoir.com/tutoriels/1014/utiliser-la-sdl-en-langage-c/)*
-
-
-Before starting anything in SDL, you need to initialize it with the SDL_init function, then as I said, creating the window is really simple, you just need to put the SDL_CreateWindow function inside your code, to fill it and this is all to create your first window.
-
-
-
-### **Rendering on the window**
-### **Game loop**
-### **Player and Player movements**
-### **Delta Time**
-### **The map**
-### **Player collisions**
-### **Raycasting**
-### **Ray collision and detection**
-### **Fake 3D generation**
-### **Ceiling, Floor and Wall textures**
-
 
 ## What I could have done more
 
+- I could have implemented an exit to my labyrinth / EndGame
+- I could have implemented objects
+- I could have implemented enemies (Like Wolfeinstein3D)
+- I could have implemented rain
+
+And so on, only imagination and skills can make it possible.
 
 ## Sources
 
